@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List Harian</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background-color: #1e1e2f;
+            color: #e0e0e0;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+        }
+        .title {
+            font-size: 1.5rem;
+            color: #4ade80;
+            text-align: center;
+        }
+        .day-select {
+            background-color: #27293d;
+            color: #e0e0e0;
+            padding: 10px;
+            border: 1px solid #4ade80;
+            border-radius: 5px;
+            width: 100%;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            padding: 10px;
+            background: #2a2c3d;
+            margin-bottom: 5px;
+            border-radius: 5px;
+        }
+        .highlight {
+            color: #4ade80;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1 class="title">To-Do List Harian</h1>
+    
+    <div class="mb-4">
+        <label for="day-select" class="block text-sm font-medium">Pilih Hari</label>
+        <select id="day-select" class="day-select">
+            <option value="Monday">Senin</option>
+            <option value="Tuesday">Selasa</option>
+            <option value="Wednesday">Rabu</option>
+            <option value="Thursday">Kamis</option>
+            <option value="Friday">Jumat</option>
+            <option value="Saturday">Sabtu</option>
+            <option value="Sunday">Minggu</option>
+        </select>
+    </div>
+
+    <div>
+        <h2 class="highlight">Jadwal Hari Ini</h2>
+        <ul id="schedule-list"></ul>
+    </div>
+    
+    <div>
+        <h2 class="highlight">Target Mingguan</h2>
+        <ul id="goals-list"></ul>
+    </div>
+    
+    <div>
+        <h2 class="highlight">Motivasi Harian</h2>
+        <p id="motivation-text"></p>
+    </div>
+</div>
+
+<script>
+    // Data Jadwal Harian
+    const jadwal = {
+        "Monday": {
+            "04:30": "Bangun & Sholat Subuh",
+            "04:45": "Analisis market & crypto",
+            "05:15": "Persiapan mental hari ini",
+            "05:30": "Mandi & Sarapan",
+            "06:30": "Mulai sekolah",
+            "15:00": "Istirahat & Sholat Ashar",
+            "15:30": "Belajar Blockchain dasar",
+            "16:15": "Latihan trading (demo account)",
+            "17:00": "Me Time (Olahraga, Hobi)",
+            "18:00": "Coding Smart Contract",
+            "18:30": "Analisis Pasar",
+            "19:00": "Kerjakan PR",
+            "19:30": "Sholat & Makan Malam",
+            "20:00": "Review & update jurnal trading",
+            "21:00": "Istirahat"
+        },
+        // Tambahkan jadwal untuk hari lain di sini...
+    };
+
+    // Data Target Mingguan
+    const target = {
+        "Blockchain & Trading": {
+            "Goal": "Mengerti dasar blockchain dan trading.",
+            "Action": ["Belajar blockchain dan smart contract 3 hari", "Latihan trading demo 2 kali"],
+            "TargetHasil": "Sukses melakukan 2 simulasi trading dengan catatan pasar."
+        },
+        "Belajar Python & Cyber Security": {
+            "Goal": "Kuasai dasar Python dan keamanan jaringan.",
+            "Action": ["Belajar Python & AI 2 jam", "Belajar Cyber Security 2 jam"],
+            "TargetHasil": "Bisa buat program sederhana di Python dan paham dasar keamanan jaringan."
+        }
+    };
+
+    // Data Motivasi Harian
+    const motivasi = {
+        "Monday": "Awali minggu dengan semangat!",
+        "Tuesday": "Tetap fokus, jangan menyerah!",
+        "Wednesday": "Teruslah belajar dan berlatih!",
+        "Thursday": "Jangan takut gagal, terus coba!",
+        "Friday": "Akhiri minggu dengan pencapaian!",
+        "Saturday": "Manfaatkan akhir pekan untuk eksplorasi!",
+        "Sunday": "Siapkan diri untuk minggu baru!"
+    };
+
+    // Fungsi untuk Menampilkan Jadwal Harian
+    function tampilkanJadwal() {
+        const day = document.getElementById("day-select").value;
+
+        // Tampilkan Jadwal Harian
+        const daySchedule = jadwal[day];
+        const scheduleList = document.getElementById("schedule-list");
+        scheduleList.innerHTML = ""; // Kosongkan jadwal sebelumnya
+
+        for (let waktu in daySchedule) {
+            const listItem = document.createElement("li");
+            listItem.textContent = `${waktu}: ${daySchedule[waktu]}`;
+            scheduleList.appendChild(listItem);
+        }
+
+        // Tampilkan Target Mingguan
+        const goalsList = document.getElementById("goals-list");
+        goalsList.innerHTML = ""; // Kosongkan target sebelumnya
+        for (let key in target) {
+            const targetItem = document.createElement("li");
+            const targetData = target[key];
+            targetItem.innerHTML = `<strong>${key}</strong>: ${targetData.Goal}<br> Aksi: ${targetData.Action.join(", ")}<br> Hasil: ${targetData.TargetHasil}`;
+            goalsList.appendChild(targetItem);
+        }
+
+        // Tampilkan Motivasi Harian
+        const motivationText = document.getElementById("motivation-text");
+        motivationText.textContent = motivasi[day];
+    }
+
+    // Event Listener untuk Dropdown Pilihan Hari
+    document.getElementById("day-select").addEventListener("change", tampilkanJadwal);
+
+    // Tampilkan Jadwal Pertama Kali Saat Halaman Dibuka
+    tampilkanJadwal();
+</script>
+
+</body>
+</html>

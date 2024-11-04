@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard To-Do List Harian</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background-color: #0e0e10;
+            color: #e0e0e0;
+            font-family: Consolas, "Courier New", monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0; /* Reset default margin */
+        }
+        .container {
+            max-width: 800px;
+            padding: 20px;
+            background: #1a1b25;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 255, 128, 0.2);
+            overflow: hidden; /* Prevent overflow for responsiveness */
+        }
+        .title {
+            font-size: 2rem;
+            color: #00ff80;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .day-select {
+            background-color: #2a2c3d;
+            color: #e0e0e0;
+            padding: 10px;
+            border: 1px solid #00ff80;
+            border-radius: 5px;
+            width: 100%;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            padding: 10px;
+            background: #2a2c3d;
+            margin-bottom: 8px;
+            border-radius: 5px;
+            border-left: 3px solid #00ff80;
+            display: flex;
+            align-items: center;
+        }
+        li.completed {
+            text-decoration: line-through;
+            color: #aaa; /* Change color for completed tasks */
+        }
+        .highlight {
+            color: #00ff80;
+            font-weight: bold;
+        }
+        .card {
+            background: #0d0f1a;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 255, 128, 0.1);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1 class="title">Dashboard To-Do List Harian</h1>
+    
+    <div class="card">
+        <h2 class="highlight">Motivasi Harian</h2>
+        <p id="motivation-text"></p>
+    </div>
+
+    <div class="mb-4">
+        <label for="day-select" class="block text-sm font-medium">Pilih Hari</label>
+        <select id="day-select" class="day-select">
+            <option value="Monday">Senin</option>
+            <option value="Tuesday">Selasa</option>
+            <option value="Wednesday">Rabu</option>
+            <option value="Thursday">Kamis</option>
+            <option value="Friday">Jumat</option>
+            <option value="Saturday">Sabtu</option>
+            <option value="Sunday">Minggu</option>
+        </select>
+    </div>
+
+    <div class="card">
+        <h2 class="highlight">Jadwal Hari Ini</h2>
+        <ul id="schedule-list"></ul>
+    </div>
+    
+    <div class="card">
+        <h2 class="highlight">Target Mingguan</h2>
+        <ul id="goals-list"></ul>
+    </div>
+</div>
+
+<script>
+    const jadwal = {
+        "Monday": {
+            "04:30": "Bangun & Sholat Subuh",
+            "04:45": "Analisis market & crypto",
+            "05:15": "Persiapan mental hari ini",
+            "05:30": "Mandi & Sarapan",
+            "06:30": "Mulai sekolah",
+            "15:00": "Istirahat & Sholat Ashar",
+            "15:30": "Belajar Blockchain dasar",
+            "16:15": "Latihan trading (demo account)",
+            "17:00": "Me Time (Olahraga, Hobi)",
+            "18:00": "Coding Smart Contract",
+            "18:30": "Analisis Pasar",
+            "19:00": "Kerjakan PR",
+            "19:30": "Sholat & Makan Malam",
+            "20:00": "Review & update jurnal trading",
+            "21:00": "Istirahat"
+        },
+        // ... (Other days' schedules remain unchanged)
+    };
+
+    const target = {
+        "Blockchain & Trading": {
+            Goal: "Mengerti dasar blockchain dan trading.",
+            Action: ["Belajar blockchain", "Latihan trading", "Analisis pasar"]
+        },
+        // ... (Other targets remain unchanged)
+    };
+
+    const motivasi = [
+        "Kerja keras adalah kunci kesuksesan.",
+        "Setiap hari adalah kesempatan baru.",
+        "Jangan menyerah, teruslah belajar.",
+        "Fokus pada proses, hasil akan mengikuti.",
+        "Kecilkan tujuan, besarkan hasil."
+    ];
+
+    const selectElement = document.getElementById("day-select");
+    const scheduleList = document.getElementById("schedule-list");
+    const goalsList = document.getElementById("goals-list");
+    const motivationText = document.getElementById("motivation-text");
+
+    function updateDashboard() {
+        const selectedDay = selectElement.value;
+        scheduleList.innerHTML = "";
+        for (const [time, activity] of Object.entries(jadwal[selectedDay])) {
+            scheduleList.innerHTML += `<li><input type="checkbox" class="task-checkbox" /> ${time}: ${activity}</li>`;
+        }
+
+        goalsList.innerHTML = "";
+        for (const [key, value] of Object.entries(target)) {
+            goalsList.innerHTML += `<li>${value.Goal} - Tindakan: ${value.Action.join(", ")}</li>`;
+        }
+
+        motivationText.innerText = motivasi[Math.floor(Math.random() * motivasi.length)];
+        attachCheckboxListeners();
+    }
+
+    function attachCheckboxListeners() {
+        const checkboxes = document.querySelectorAll(".task-checkbox");
+        checkboxes.forEach((checkbox) => {
+            checkbox.addEventListener("change", (event) => {
+                const li = event.target.parentElement;
+                if (event.target.checked) {
+                    li.classList.add("completed");
+                } else {
+                    li.classList.remove("completed");
+                }
+            });
+        });
+    }
+
+    selectElement.addEventListener("change", updateDashboard);
+    updateDashboard();
+</script>
+</body>
+</html>
